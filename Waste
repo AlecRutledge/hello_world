@@ -1,0 +1,1078 @@
+from random import randint
+import math
+
+print(' ')
+k360 = False
+bullets = 0
+mmbullets = 0                 # 10mm bullets
+fusioncells = 0                                       # Laser weapon ammo
+shells = 0                 # shells
+shotgun = 0
+laserrifle = 0                        # laser rifle indicator
+tenmm = 0
+gaccur = 0
+jet_ = 0                          # boosts
+jetu = 0
+buff_ = 0
+ste_ = 0
+psy_ = 0
+x = 0
+attack_max = 0                # attack
+attack_min = 0
+eattack_max = 0
+eattack_min = 0
+WSG1 = 0
+b = ' '
+money = 0
+strength = 0                   # SPECIAL
+perception = 0
+endurance = 0
+charisma = 0
+intelligence = 0
+agility = 0
+luck = 0
+gun = '10mm'
+armor = 'Vault Suit'
+your_hp = 300                                       # player hp
+raider_hp = 300
+gunner_hp = 400
+yao_guai_hp = 350
+stimpacks = 0
+win_indicator = 0
+suse = 0
+buse = 0
+market = 0
+pip = 0
+klo = 0
+lol = False
+k12 = False
+gender = ''
+age = 8
+
+
+class JET(object):
+
+    def jinfo(self):
+        print('Name:       Info:          Remaining:')
+        print 'Jet    Grants an extra        ', jet_
+        print '      turn during combat'
+
+
+class BUFF(object):
+
+    def binfo(self):
+        print(' Name:            Info:           Remaining:')
+        print 'Buff-Out    Lowers enemies next      ', buff_
+        print '               attack by 50'
+
+
+class PSYCHO(object):
+
+    def pinfo(self):
+        print(' Name:           Info:            Remaining:')
+        print 'Psycho   Doubles ranged attack      ', psy_
+        print '          damage, quadruples '
+        print '          melee attack damage'
+
+
+class STEADY(object):
+
+    def steinfo(self):
+        print(' Name:       Info:       Remaining:')
+        print 'Steady   Increases hit      ', ste_
+        print '         chance to 100% '
+
+
+class LASER_RIFLE(object):
+
+    def lasinfo(self):
+        print '        Name:            Damage:      Type:       Accuracy:      Ammo:'
+        print 'Institute Laser Rifle     70 - 85     Ranged        85%           ', fusioncells
+
+
+class SHOTGUN(object):
+
+    def shofo(self):
+        print 'Name:        Damage:     Type:      Accuracy:      Ammo:   '
+        print 'Shotgun      60 - 90     Ranged        80%           ', shells
+
+
+class TENMM(object):
+
+    def mminfo(self):
+        print 'Name:     Damage:      Type:      Accuracy:      Ammo:'
+        print '10mm      40 - 65     Ranged         85%           ', mmbullets
+
+
+class INV(JET, BUFF, PSYCHO, STEADY, LASER_RIFLE, TENMM, SHOTGUN):
+
+    def menu(self):
+        print 'Aid: '
+        print ''
+        INV.jinfo(self)
+        print ' '
+        INV.binfo(self)
+        print ''
+        INV.pinfo(self)
+        print ' '
+        INV.steinfo(self)
+
+inv = INV()
+
+def equip(str5):
+    global attack_max
+    global attack_min
+    global gaccur
+    global bullets
+    global gun
+    global mmbullets
+    global fusioncells
+    global shells
+    if str5 == '10MM' and tenmm == 1:
+        attack_min = 40
+        attack_max = 65
+        gaccur = 85
+        bullets = mmbullets
+        gun = '10mm'
+    elif str5 == 'INSTITUTE LASER RIFLE' and laserrifle == 1:
+        attack_min = 70
+        attack_max = 85
+        gaccur = 85
+        bullets = fusioncells
+        gun = 'Institute Laser Rifle'
+    elif str5 == 'SHOTGUN' and shotgun == 1:
+        attack_min = 60
+        attack_max = 90
+        gaccur = 80
+        bullets = shells
+        gun = 'Shotgun'
+
+
+def attack(str2):
+    global bullets
+    global str1
+    global stimpacks
+    global jetu
+    global x
+    global buse
+    global shells
+    global fusioncells
+    global suse
+    global your_hp
+    global accuracy
+    global enemy_hp
+    global attack_name
+    global gaccur
+    global accuracy2
+    global win_indicator
+    global attack_max
+    global attack_min
+    global eattack_min
+    global eattack_max
+    global mmbullets
+    str2 = str2.upper()
+    if str2 == 'RAIDER':
+        enemy_hp = 300
+        eattack_min = 55
+        eattack_max = 70
+    elif str2 == 'SYNTH':
+        enemy_hp = 4000
+        eattack_min = 70
+        eattack_max = 90
+    elif str2 == 'YAO GUAI':
+        enemy_hp = 650
+        eattack_min = 50
+        eattack_max = 80
+    while enemy_hp > 0 and your_hp > 0:
+        if jetu == 1:
+            print('You used Jet, you get two turns this round')
+            str1 = str(raw_input('It is your turn, flee or shoot '))
+            str1 = str1.upper()
+            str3 = str(raw_input('It is your turn, flee or shoot '))
+            str3 = str3.upper()
+        if jetu == 0:
+            str1 = str(raw_input('It is your turn, flee or shoot '))
+            str1 = str1.upper()
+            str3 = ''
+        if win_indicator == 1:
+            enter('You win the battle!')
+            return
+        elif win_indicator == -1:
+            enter('You lose the battle')
+            bullets += buse
+            return
+        k9 = False
+        while not k9:
+            if gun == '10mm':
+                bullets = mmbullets
+            if gun == 'Shotgun:':
+                bullets = shells
+            if gun == 'Institute Laser Rifle':
+                bullets = fusioncells
+            if str1 == 'SHOOT' and bullets > 0:
+                if str3 != '':
+                    accuracy = randint(1, 100)
+                    accuracy2 = randint(1, 100)
+                    buse += 2
+                else:
+                    accuracy = randint(1, 100)
+                    buse += 1
+                if gun == '10mm' and str3 == '':
+                    mmbullets -= 1
+                if gun == '10mm' and str3 != '':
+                    mmbullets -= 2
+                if gun == 'Institute Laser Rifle' and str3 == '':
+                    fusioncells -= 1
+                if gun == 'Institute Laser Rifle' and str3 != '':
+                    fusioncells -= 2
+                if gun == 'Shotgun' and str3 == '':
+                    shells -= 1
+                if gun == 'Shotgun' and str3 != '':
+                    shells -= 2
+                k9 = True
+            elif str1 == 'SHOOT' and bullets <= 0:
+                enter('You have no bullets you fool.')
+                win_indicator = -1
+                market = 1
+                return
+            elif str1 == 'FLEE' and endurance >= 5:
+                enter('You flee the battle')
+                win_indicator = 0
+                enemy_hp = 0
+                return
+            elif str1 == 'FLEE' and endurance < 5:
+                enter('You try to flee the battle but they catch up to you')
+                str1 = str(raw_input('It is your turn, flee or shoot '))
+                str1 = str1.upper()
+            elif str1 != 'SHOOT' and str1 != 'FLEE':
+                str1 = str(raw_input('Invalid attack please enter an attack: '))
+                str1 = str1.upper()
+        if accuracy <= gaccur:
+            damage = randint(attack_min, attack_max)
+            enemy_hp -= damage
+            damage1 = str(damage)
+            ply_display = 'Your shot hit, it did ' + damage1 + ' damage'
+            print(ply_display)
+            enemy_hp1 = str(enemy_hp)
+            enmy_disp = 'Enemy has ' + enemy_hp1 + ' health left'
+            print(enmy_disp)
+            if enemy_hp <= 0:
+                enter('You win the battle!')
+                win_indicator = 1
+                return
+        elif accuracy > gaccur:
+            enter('Your shot missed')
+        if accuracy2 <= gaccur and jetu == 1:
+            damage = randint(attack_min, attack_max)
+            enemy_hp -= damage
+            damage1 = str(damage)
+            ply_display = 'Your shot hit, it did ' + damage1 + ' damage'
+            print(ply_display)
+            enemy_hp1 = str(enemy_hp)
+            enmy_disp = 'Enemy has ' + enemy_hp1 + ' health left'
+            print(enmy_disp)
+            if enemy_hp <= 0:
+                enter('You win the battle!')
+                win_indicator = 1
+                return
+        elif accuracy2 > gaccur and jetu == 1:
+            enter('Your shot missed')
+        jetu = 0
+        print('')
+        enter('It is now your opponents move')
+        if str2 == 'RAIDER':
+            attack_name = 'Shoot'
+        if str2 == 'SYNTH':
+            attack_name = 'Laser Blast'
+        if str2 == 'YAO GUAI':
+            attack_name = 'Slash'
+        op_accuracy = randint(1, 100)
+        if op_accuracy <= 75:
+            op_damage = randint(eattack_min, eattack_max)
+            your_hp = your_hp - op_damage
+            op1 = str(op_damage)
+            op_display = 'Opponent used ' + attack_name + ' and it did ' + op1 + ' damage'
+            print(op_display)
+            y_1 = str(your_hp)
+            y_hp = 'You have ' + y_1 + ' health left'
+            print(y_hp)
+            if your_hp <= 0:
+                enter('You died :(')
+                win_indicator = -1
+                return
+            k80 = False
+            jetu = 0
+            accuracy2 = 0
+            stim = str(raw_input('Do you access your Holocorder? '))
+            stim = stim.upper()
+            while not k80:
+                if stim == 'YES':
+                    enter2()
+                    k80 = True
+                elif stim == 'NO':
+                    print('')
+                    k80 = True
+                else:
+                    stim = str(raw_input("Just enter yes or no: "))
+                    stim = stim.upper()
+        elif op_accuracy > 75:
+            enter('Opponent missed')
+        if enemy_hp <= 0:
+            win_indicator = 1
+        if your_hp <= 0:
+            win_indicator = -1
+
+
+def enter(st):
+    global inv
+    n = raw_input(st)
+    n = n.upper()
+    if n == 'INVENTORY' and pip == 1:
+        print(' ')
+        print('Type End to exit')
+        print ''
+        k420 = False
+        while not k420:
+            an = str(raw_input('Access Weapons, Aid, or Misc '))
+            an = an.upper()
+            youi = False
+            while not youi:
+                if an == 'AID':
+                    print('')
+                    inv = INV()
+                    inv.menu()
+                    print('')
+                    youi = True
+                elif an == 'WEAPONS':
+                    print('')
+                    if tenmm == 1:
+                        inv.mminfo()
+                        print ''
+                    if shotgun == 1:
+                        inv.shofo()
+                        print ''
+                    if laserrifle == 1:
+                        inv.lasinfo()
+                        print ''
+                    if tenmm == 0 and shotgun == 0 and laserrifle == 0:
+                        print('You have no weapons')
+                        print('')
+                    asl = str(raw_input('Equip weapon or go back: '))
+                    print('')
+                    asl = asl.upper()
+                    if asl == 'EQUIP':
+                        we = str(raw_input('Which weapon would you like to equip: '))
+                        we = we.upper()
+                        equip(we)
+                    else:
+                        print('Returning to menu')
+                        print('')
+                        youi = True
+
+                elif an == 'MISC':
+                    print('LOL NOT FINISHED YET :P')
+                    youi = True
+                elif an == 'END':
+                    enter('Exiting holo')
+                    return
+                else:
+                    an = str(raw_input('Invalid section, enter a real section please '))
+                    an = an.upper()
+    if n == 'STATS' and pip == 1:
+        print('')
+        print('Name: ', name)
+        print('Gender: ', gender)
+        print('Age: ', age)
+        print('Strength: ', strength)
+        print ('Perception: ', perception)
+        print ('Endurance: ', endurance)
+        print ('Charisma: ', charisma)
+        print ('Intelligence: ', intelligence)
+        print ('Agility: ', agility)
+        print ('Luck: ', luck)
+        print('')
+    if n == 'READ' and WSG1 == 1 and pip == 1:
+        enter(' ')
+        enter('The Wasteland Survival Guide')
+        enter(' ')
+        enter('Welcome to the Wasteland!')
+        enter('Sakurasou no Pet na Kanojo')
+        enter('Cowboy Bebop')
+        enter('Fate/Zero')
+        enter('Full Metal Alchemist Brotherhood')
+        enter('There are a few things you will need to survive')
+        enter('First things first, know your enemies, the Raider and Gunner gangs')
+        enter('Raiders are ruthless thugs who have no leader and no rules')
+        enter('Raiders are your main enemy out in the Wasteland, but be warned of other threats')
+        enter('The Gunners are a viscous group of mercenaries who will do anything for the right price')
+        enter('Another threat is the Insti...')
+        enter('...The book is damaged..')
+    elif n == 'READ' and WSG1 == 0:
+        enter('You have nothing to read :(')
+    if n == 'INVENTORY' and pip == 0:
+        print ''
+        print('You do not have a Holocorder')
+        print ' '
+    else:
+        return
+
+
+def enter2():
+    global n
+    global asl
+    global jetu
+    global an
+    global mel
+    global melo
+    global inv
+    n = 'inventory'
+    n = n.upper()
+    if n == 'INVENTORY' and pip == 1:
+        print(' ')
+        print('Type End to exit')
+        print ''
+        k420 = False
+        while not k420:
+            an = str(raw_input('Access Weapons, Aid, or Misc '))
+            an = an.upper()
+            youi = False
+            while not youi:
+                if an == 'AID':
+                    print('')
+                    inv = INV()
+                    inv.menu()
+                    print('')
+                    mel = str(raw_input('Would you like to use an Aid or return to menu '))
+                    mel = mel.upper()
+                    if mel == 'MENU':
+                        print('Exiting to menu')
+                    if mel == 'RETURN':
+                        print('Exiting to menu')
+                    if mel == 'USE':
+                        print('')
+                        melo = str(raw_input('What would you like to use '))
+                        melo = melo.upper()
+                    if melo == 'JET':
+                        print('You have used Jet')
+                        print('You will have two turns next round')
+                        jetu = 1
+
+                    youi = True
+                elif an == 'WEAPONS':
+                    print('')
+                    if tenmm == 1:
+                        inv.mminfo()
+                        print ''
+                    if shotgun == 1:
+                        inv.shofo()
+                        print ''
+                    if laserrifle == 1:
+                        inv.lasinfo()
+                        print ''
+                    if tenmm == 0 and shotgun == 0 and laserrifle == 0:
+                        print('You have no weapons')
+                        print('')
+                    asl = str(raw_input('Equip weapon or go back: '))
+                    print('')
+                    asl = asl.upper()
+                    if asl == 'EQUIP':
+                        we = str(raw_input('Which weapon would you like to equip: '))
+                        we = we.upper()
+                        equip(we)
+                    else:
+                        print('Returning to menu')
+                        print('')
+                        youi = True
+                elif an == 'MISC':
+                    print('LOL NOT FINISHED YET :P')
+                    youi = True
+                elif an == 'END':
+                    enter('Exiting holo')
+                    return
+                else:
+                    an = str(raw_input('Invalid section, enter a real section please '))
+                    an = an.upper()
+
+
+def input():
+    global a
+    global k12
+    a = str(raw_input('What do you do: '))
+    a = a.upper()
+    while not k12:
+        if a == '':
+            enter("Don't press enter too fast")
+            a = str(raw_input('What do you do: '))
+            a = a.upper()
+        else:
+            k12 = True
+    if k12 == True:
+        return a
+
+enter('Welcome to Waste ')
+enter("Answer the 'What do you do: ' prompts with one of the choices ")
+enter("You can check stats, inventory, and read at anytime except during 'What do you do: ' prompts ")
+enter('')
+enter('You awake in a cold, cramped, white, chamber with a digital display in front of you that reads ')
+name = str(raw_input('Name: '))
+if name == '':
+    name = 'George'
+k1 = False
+gender = str(raw_input('Gender: '))
+gender = gender.upper()
+while not k1:
+    if gender == 'MALE' or gender == 'FEMALE':
+        k1 = True
+    else:
+        gender = str(raw_input('You must be Male or Female. '))
+        gender = gender.upper()
+k2 = False
+while True:
+    try:
+        age = int(raw_input('Age: '))
+        break
+    except:
+        print ('Please enter a number')
+while not k2:
+    if age < 18:
+        age = int(raw_input('Please give a realistic age.  '))
+    elif age < 50:
+        k2 = True
+    else:
+        age = int(raw_input('Please give a realistic age.  '))
+enter(' ')
+enter('Welcome to the Citadel! ')
+enter('You have volunteered to participate in a cryogenic experiment to determine effects of suspended animation on the human body. ')
+enter('We are not sure how much you remember, but it is safe to assume you do not remember anything. ')
+enter('Before you went to sleep, the world had fallen into complete nuclear war. ')
+enter('We here at Citadel Co. have supplied some necessary survival gear to survive you new life above. ')
+enter('We have designed a S.P.E.C.I.A.L. system here that will help you survive in the Wasteland. ')
+enter('You have 14 points to distribute among your skills ')
+k9 = False
+while not k9:
+    global left
+    while True:
+        try:
+            strength = float(raw_input('Enter your Strength: '))
+            break
+        except:
+            print "Please enter a number"
+    strength = math.floor(strength)
+    while strength > 14:
+        enter("You don't have that many points to spend")
+        left = 14
+        print'You have %d points left' % left
+        strength = float(raw_input('Enter your Strength: '))
+    while strength < 0:
+        enter('Please enter a positive number of points')
+        left = 14
+        print'You have %d points left' % left
+        strength = math.floor(float(raw_input('Enter your Strength: ')))
+
+    while True:
+        try:
+            perception = float(raw_input('Enter your Perception: '))
+            break
+        except:
+            print "Please enter a number"
+    perception = math.floor(perception)
+    while strength + perception > 14:
+        enter("You don't have that many points to spend")
+        left = 14 - strength
+        print'You have %d points left' % left
+        perception = float(raw_input('Enter your Perception: '))
+    while perception < 0:
+        enter('Please enter a positive number of points')
+        left = 14 - strength
+        print'You have %d points left' % left
+        perception = float(raw_input('Enter your Perception: '))
+        perception = math.floor(float(raw_input('Enter your Perception: ')))
+
+    while True:
+        try:
+            endurance = float(raw_input('Enter your Endurance: '))
+            break
+        except:
+            print "Please enter a number"
+    endurance = math.floor(endurance)
+    while strength + perception + endurance > 14:
+        enter("You don't have that many points to spend")
+        left = 14 - (strength + perception)
+        print'You have %d points left' % left
+        endurance = float(raw_input('Enter your Endurance: '))
+    while endurance < 0:
+        enter('Please enter a positive number of points')
+        left = 14 - (strength + perception)
+        print'You have %d points left' % left
+        endurance = int(raw_input('Enter your Endurance: '))
+        endurance = math.floor(float(raw_input('Enter your Endurance: ')))
+
+    while True:
+        try:
+            charisma = float(raw_input('Enter your Charisma: '))
+            break
+        except:
+            print "Please enter a number"
+    charisma = math.floor(charisma)
+    while strength + perception + endurance + charisma > 14:
+        enter("You don't have that many points to spend")
+        left = 14 - (strength + perception + endurance)
+        print'You have %d points left' % left
+        charisma = float(raw_input('Enter your Charisma: '))
+    while charisma < 0:
+        enter('Please enter a positive number of points')
+        left = 14 - (strength + perception + endurance)
+        print'You have %d points left' % left
+        charisma = float(raw_input('Enter your Charisma: '))
+        charisma = math.floor(float(raw_input('Enter your Charisma: ')))
+
+    while True:
+        try:
+            intelligence = float(raw_input('Enter your Intelligence: '))
+            break
+        except:
+            print "Please enter a number"
+    intelligence = math.floor(intelligence)
+    while strength + perception + endurance + charisma + intelligence > 14:
+        enter("You don't have that many points to spend")
+        left = 14 - (strength + perception + endurance + charisma)
+        print'You have %d points left' % left
+        intelligence = float(raw_input('Enter your Intelligence: '))
+    while intelligence < 0:
+        enter('Please enter a positive number of points')
+        left = 14 - (strength + perception + endurance + charisma)
+        print'You have %d points left' % left
+        intelligence = float(raw_input('Enter your Intelligence: '))
+        intelligence = math.floor(float(raw_input('Enter your Intelligence: ')))
+
+    while True:
+        try:
+            agility = float(raw_input('Enter your Agility: '))
+            break
+        except:
+            print "Please enter a number"
+    agility = math.floor(agility)
+    while strength + perception + endurance + charisma + intelligence + agility > 14:
+        enter("You don't have that many points to spend")
+        left = 14 - (strength + perception + endurance + charisma + intelligence)
+        print('You have %d points left') % left
+        agility = float(raw_input('Enter your Agility: '))
+    while agility < 0:
+        enter('Please enter a positive number of points')
+        left = 14 - (strength + perception + endurance + charisma + intelligence)
+        print('You have %d points left') % left
+        agility = float(raw_input('Enter your Agility: '))
+        agility = math.floor(float(raw_input('Enter your Agility: ')))
+
+    while True:
+        try:
+            luck = float(raw_input('Enter your Luck: '))
+            break
+        except:
+            print "Please enter a number"
+    luck = math.floor(luck)
+    while strength + perception + endurance + charisma + intelligence + agility + luck > 14:
+        enter("You don't have that many points to spend")
+        left = 14 - (strength + perception + endurance + charisma + + intelligence + agility)
+        print 'You have %d points left' % left
+        luck = float(raw_input('Enter your Luck: '))
+    while luck < 0:
+        enter('Please enter a positive number of points')
+        left = 14 - (strength + perception + endurance + charisma + + intelligence + agility)
+        print 'You have %d points left'  % left
+        luck = float(raw_input('Enter your Luck: '))
+        luck = math.floor(float(raw_input('Enter your Luck: ')))
+    k9 = True
+if gender == 'MALE':
+    strength += 1
+    endurance += 1
+    luck += 1
+if gender == 'FEMALE':
+    charisma += 1
+    intelligence += 1
+    agility += 1
+if name == 'DerynAV1':
+    strength += 100
+    perception += 100
+    endurance += 100
+    charisma += 100
+    intelligence += 100
+    agility += 100
+    luck += 100
+if name == 'Richard':
+    strength -= 1
+enter(' ')
+enter('Now that you have finished reading the screen you look around your chamber ')
+enter("You see a button down by your hand that reads 'Door Release', but you are afraid what you will find outside ")
+a = str(raw_input('Do you press the button or stay: '))
+a = a.upper()
+k3 = False
+while not k3:
+    if a == 'STAY':
+        enter('You decide to wait in the pod for awhile')
+        enter('After an indeterminable amount of time the sound of hissing gas fills you ears and you feel yourself '
+              'losing consciousness ')
+        enter(' ')
+        enter('...168 years later... ')
+        enter(' ')
+        enter('Life Support runs out of power and you asphyxiate and die ')
+        enter('---You died---')
+        a = str(raw_input('Choose again: '))
+    elif a == 'PRESS':
+        k3 = True
+    else:
+        a = str(raw_input('Invalid command, please enter a valid command. ')).upper()
+enter('You exit the chamber and look around the room. There are bright florescent lights on the ceiling and '
+      'identical pods lining the walls ')
+enter('You peer into the pods and see that they are all empty')
+enter('You see a a chest next to a door leading to a hallway ')
+enter('You walk over to the chest but you are not sure what waits inside ')
+enter('You can leave or open ')
+a = input()
+k6 = False
+while not k6:
+    if a == 'OPEN':
+        enter('You got a 10mm pistol and 20 bullets ')
+        enter('You found a blue and gold suit, you put it on ')
+        enter('You found a stash of Stimpacks under the suit, you decide to take it ')
+        enter('At the bottom of the chest you find a bobby pin ')
+        enter('You decide to take it just in case ')
+        stimpacks += 5
+        pip += 1
+        tenmm += 1
+        bullets += 20
+        k6 = True
+    elif a == "LEAVE":
+        enter('Too bad you open it anyways ')
+        enter('You got a 10mm pistol and 20 bullets ')
+        enter('You found a blue and gold suit, you put it on ')
+        enter('You find a strange computer that fits on your wrist')
+        enter('This is your Holocorder, use it to access inventory and stats')
+        enter('You found a stash of Stimpacks under the suit, you decide to take it ')
+        enter('At the bottom of the chest you find a bobby pin ')
+        enter('You decide to take it just in case ')
+        stimpacks += 5
+        pip += 1
+        tenmm += 1
+        bullets += 20
+        k6 = True
+    else:
+        a = str(raw_input('Invalid command, please enter a valid command: ')).upper()
+enter('As you are standing up you notice a locked safe in the wall ')
+enter('You seem to faintly remember something about picking locks ')
+enter('You can leave or open ')
+a = input()
+k8 = False
+while not k8:
+    if a == 'OPEN' and intelligence > 2:
+        bullets += 15
+        money += 50
+        jet_ += 1
+        enter('You use the bobby pin to pick the lock ')
+        enter('You found 15 bullets, 50 CAPS, and some Jet ')
+        k8 = True
+    if a == 'OPEN' and intelligence <= 2:
+        enter("You can't seem to remember how to pick it ")
+        k8 = True
+    if a == 'LEAVE':
+        enter('You decide not to fool with the safe ')
+        k8 = True
+    elif a != 'OPEN' and a != 'LEAVE':
+        a = str(raw_input('Invalid command, please enter a valid command: ')).upper()
+enter('You exit the room and walk down a hallway ')
+enter('As you walk you notice that the walls are grimy and the pipes are rusted ')
+enter("You think to yourself 'No one has been here in a long time' ")
+enter('At the end of the hall is a room with a control panel on the wall ')
+enter('To your right is a large circular door, and next to the control panel is a door that leads to a pitch black '
+      'room ')
+enter('You walk over to the door and peer inside ')
+enter('The inside is pitch black, do you risk it? ')
+enter('You can leave or enter ')
+a = input()
+k6 = False
+while not k6:
+    if a == 'ENTER' and perception > 2:
+        enter('You enter the room and immediately notice there is a bridge outlined in the darkness ')
+        enter('Just before you take a step you notice the bridge has a gap in it ')
+        enter("You don't know whether to jump or leave ")
+        enter('You can leave or jump ')
+        a = input()
+        b = a
+        while True:
+            if b == 'JUMP' and agility <= 2:
+                enter("You try to jump the gap but don't make it ")
+                enter('---You died--- ')
+                enter(' ')
+                enter('Restart from last choice ')
+                enter('The inside is pitch black, do you risk it? ')
+                a = 'DerynAV1'
+                b = input()
+                b = b.upper()
+            if b == 'JUMP' and agility > 2:
+                enter('You jump the gap and walk to the end of the bridge ')
+                enter('You find a chest in the corner ')
+                enter('Inside is some Buff-Out, 50 CAPS, 2 Stimpacks, and a Wasteland Survival Guide ')
+                enter('You make your way back to the doorway ')
+                buff_ += 1
+                money += 50
+                WSG1 = 1
+                stimpacks += 2
+                k6 = True
+                break
+            elif b == 'LEAVE':
+                enter('You decide not to risk it ')
+                k6 = True
+                break
+            else:
+                b = str(raw_input('Invalid command, please enter a valid command: '))
+                b = b.upper()
+    if a == 'ENTER' and perception < 3:
+        enter('You step in, then take another step... and fall to your death ')
+        enter('---You died--- ')
+        enter(' ')
+        enter('Restart from last choice ')
+        enter('The inside is pitch black, do you risk it? ')
+        a = input()
+    if a == 'LEAVE':
+        enter('You decide not to risk it ')
+        k6 = True
+    elif a != 'LEAVE' and a != 'ENTER' and b != 'JUMP' and b != 'LEAVE':
+        a = str(raw_input('Invalid command, please enter a valid command: ')).upper()
+enter('You walk over to the control panel and examine it ')
+enter('You instinctively enter in a combination of buttons, and to your right here the grinding of the door opening ')
+enter('A draft of cool cleansing air blows in and you feel refreshed, but remember that you still have to find out what'
+      ' is going on ')
+enter('As you walk up the metal ramp to the surface, you hear the sound of gunfire ')
+enter('You begin to run up the ramp to see what is going on ')
+enter('As you get to the top of the ramp you look out at the Wasteland ')
+enter('The entrance to the vault is located at a cave like opening in a little hill ')
+enter('The ground around looks dry and cracked, but there are trees and shrubs, and nearby you hear the sound of '
+      'running water ')
+enter('From below you hear the sound of running footsteps and through the trees a man appears holding his shoulder and '
+      'running towards you ')
+enter('You impulsively run down to help him, and as you are running down another shape comes out of the woods ')
+enter('A man holding a futuristic looking gun and wearing intimidating armor emerges from the trees ')
+enter("You somehow know the man with the armor is a Raider, but you don't remember if they are good or bad ")
+enter("The Raider says 'That man over there has been stealing my crops, you need to help me put him down' ")
+enter('You look over at the man on the ground holding his shoulder and wincing ')
+enter("You can't decide, kill Raider or kill man? ")
+enter('Your choices are Man or Raider ')
+a = str(raw_input('Kill: '))
+a = a.upper()
+k19 = False
+while win_indicator == 0:
+    if a == 'MAN':
+        enter("'Ok' you say to the Raider ")
+        enter('As you turn around to finish the man you hear a loud bang and your world goes dark ')
+        enter('---You died--- ')
+        enter(' ')
+        enter('Starting at last choice ')
+        enter("You can't decide, kill Raider or kill man? ")
+        a = str(raw_input('Kill: '))
+        a = a.upper()
+    if a == 'RAIDER':
+        enter("You turn to the Raider and say 'I don't believe you' ")
+        enter("He grins and raises his gun 'Wrong choice' ")
+        a = 'RAIDER'
+        attack(a)
+        buse = 0
+        suse = 0
+        if win_indicator == 1:
+            k19 = True
+        elif win_indicator == -1:
+            enter('Try again')
+            win_indicator = 0
+            your_hp = 300
+    if a != 'RAIDER' and a != 'MAN':
+        a = str(raw_input('Invalid command, please enter a valid command ')).upper()
+enter("You walk over to the man on the ground, he grunts and tries to stand up ")
+enter("'No' you say, 'stay there' ")
+enter("The man lays back down and says 'You wouldn't happen to have a Stim would ya?' ")
+k420 = False
+while not k420:
+    if stimpacks == 0:
+        enter("You say 'Sorry, I don't have any with me' ")
+        enter("'That's fine' he replies, 'I'll manage without one' ")
+        k420 = True
+    if stimpacks > 0:
+        enter("You are not sure what to do, you don't have many Stimpacks and he is just a stranger ")
+        enter('You can give or lie ')
+        a = input()
+        if a == 'GIVE':
+            stimpacks -= 1
+            psy_ += 1
+            enter("'Thank you for your kindness, I don't have much but take this Psycho' ")
+            k420 = True
+        elif a == 'LIE':
+            enter("You say to the man 'I don't have any, sorry' ")
+            enter("'Oh that's fine,' he replies 'I'll just take this Psycho instead' ")
+            k420 = True
+        else:
+            a = str(raw_input('Invalid command, please enter a valid command'))
+enter("'You help the stranger to his feet and as you begin to walk away he says, 'Wait, I haven't properly introduced "
+      "myself' ")
+enter("My name is Balthazar, I'm from a nearby place called the Institute ")
+enter("'And you must be from the Vault up there huh?' ")
+enter("'How did you know?' you ask ")
+enter("'I could tell from your suit, I have only seen a couple of those and all vault dwellers seem to wear one at "
+      "first' ")
+enter("'I've told you my name, so what's yours?' Balthazar says ")
+print "'Oh my name is " + name + "'. you respond "
+enter("'What is the Institute' you ask ")
+enter("'Oh, at the Institute we are trying to help unite the Wasteland and to drive out the scum we call the Raiders' ")
+enter("'There we need good fighters, like you. If you would like to, you can accompany me back to the Institute' ")
+enter("'I don't know what to say,' you respond, 'give me a second to think about it' ")
+enter("'Of course, we should rest awhile anyways' ")
+# If I can add alternate storyline
+enter("After awhile you stand up and walk ove to Balthazar and say 'I accept your offer' ")
+enter("'Great,' he replies,'grab my arm and we'll teleport us there right now' ")
+enter("'Teleport? When the heck did teleporting become a thing?' you inquire ")
+enter("'I can definitely tell you're from a Vault, after the Great War the Institute had to go into hiding' Balthazar "
+      "says ")
+enter("'And to keep hidden, we made it so that there are no entrances, the only way to get in is teleportation' ")
+enter("'That's pretty cool,' you say")
+enter("'Alright let's go.' You grab onto Balthazar's arm and feel the ground falling away from you ")
+enter("In the second it took to travel to the Institute you feel like your head is about to explode. As you see white "
+      "floor rushing up to meet you you feel yourself blackout ")
+enter("You awake in a bed in a hospital room at the Institute ")
+enter("You get out of the bed and look around the room. You see a cabinet and a door ")
+enter('No one else seems to be here so you decide to investigate ')
+enter('You can enter or open ')
+
+
+k16 = False
+k14 = False
+a = input()
+while not k16:
+    if a == 'OPEN':
+        enter('You walk over to the cabinet and try to open it, but its locked ')
+        enter('Do you search for the key, pick the lock, or leave? ')
+        enter('You can open, search, or leave ')
+        a = input()
+        a = a.upper()
+        while not k14:
+            if a == 'OPEN':
+                enter('You decide to try to pick the lock ')
+                if intelligence >= 3:
+                    enter('You pick the lock and get the loot ')
+                    enter('You got 10 bullets ')
+                    enter('You got some Steady! ')
+                    enter('Intelligence plus 1! ')
+                    enter('You found 3 Stimpacks ')
+                    stimpacks += 3
+                    ste_ += 1
+                    bullets += 10
+                    k12 = True
+                    k14 = True
+                elif intelligence <= 2:
+                    enter("You try to pick the lock but can't remember how ")
+                    k16 = True
+                    k14 = True
+                else:
+                    a = str(raw_input('Invalid command, please enter a valid command '))
+                    a = a.upper()
+            elif a == 'SEARCH':
+                enter('You decide to search the room instead ')
+                if luck >= 3:
+                    enter('You find the key in one of the lab coats hanging on the wall ')
+                    enter('You walk over and open the cabinent ')
+                    enter('You got 10 bullets ')
+                    enter('You some Steady ')
+                    enter('You found 3 Stimpacks ')
+                    intelligence += 1
+                    stimpacks += 3
+                    bullets += 10
+                    k16 = True
+                    k14 = True
+                elif luck <= 2:
+                    enter("You search for the key but can't find it, after five minutes you give up ")
+                    k16 = True
+                    k14 = True
+            elif a == 'LEAVE':
+                enter('You decide not to mess with the cabinet ')
+                k14 = True
+                k16 = True
+            elif a != 'OPEN' and a != 'SEARCH' and a != 'LEAVE':
+                a = str(raw_input('Invalid command, please enter a valid command '))
+                a = a.upper()
+    elif a == 'LEAVE':
+        enter('You decide not to mess with the cabinet ')
+        k12 = True
+    elif a != 'OPEN' and a != 'LEAVE':
+        a = str(raw_input('Invalid command, please enter a valid command ')).upper()
+enter('You walk over to the door and look around the corner ')
+enter('At the end of a long hall you see a doo with light coming from the edges ')
+enter("You begin to walk down the hall towards the room when you hear Balthazar's voice coming from the room ")
+print("'The new subject calls itself " + name + ", and it shows prior military experience' ")
+print("'I believe we should integrate " + name + "'s consciousness into our legion of Synths ")
+enter('You slowly begin creeping down the hall to make sure your not mishearing him ')
+enter("'We are in the final stages of preparing for our march on the whole Wasteland' ")
+enter("You pause for a moment when he says this, 'Are these people the good guys?' you wonder ")
+enter('Halfway through the hall you come across some slightly ajar lockers ')
+enter("You don't really know what's going on, but if you are caught stealing you know there will be consequences ")
+enter('You can open or leave ')
+a = input()
+k1 = False
+k2 = False
+while not k1:
+    if a == 'OPEN':
+        enter('You see a row of futuristic looking rifles and some strange canisters')
+        enter('You take a rifle and load some of the canisters into it')   # <--change
+        equip('INSTITUTE LASER RIFLE')
+        fusioncells += 50
+    elif a == 'LEAVE':
+        enter('You would rather not betray the trust of your gracious host, you continue down the hall')
+        k1 = True
+    else:
+        a = str(raw_input('Invalid command, please enter a valid command '))
+        a = a.upper()
+enter("You continue walking down the hall until you are right outside the door and put your ear right next to the door")
+enter("You hear a different voice speaking")
+print("'We have sent a Synth to pick " + name + " up promptly'")
+enter("Because you don't want to get caught you quickly make your way back to the room you woke up in")
+enter('As you walk in the room you notice another figure standing next ot your bed, but they are using their eyes to '
+      'laser scan the bed you woke up in')
+enter("The figure looks up and says 'Oh, you are very naughty, you should've just stayed in bed'")
+enter("You don't know what to do, but the man is slowly approaching you")
+enter('As he nears you realize that he must be one of the Synths that Balthazar was talking about')
+enter("The Synth raises its weapon and says, 'Come with me'")
+enter('You can fight or leave')
+a = input()
+k9 = False
+while not k9:
+    if a == 'LEAVE':
+        enter("'Alright,' you say, 'lead the way'")
+        enter('The Synth leads you back down the hallway you just left')
+        enter("As you approach the door you wonder if this was the right choice (It wasn't)")
+        enter('The Synth opens the door and you are greeted with a horrifying sight')
+        enter('Balthazar is standing in front of a table filled with humanoid robots')
+        enter('They look exactly like normal humans just without hair or defining features')
+        enter('Balthazar looks at you and frowns')
+        enter("'Why have you brought " + name + " here so soon?' Balthazar asks the Synth that brought you")
+        enter("'The patient was caught entering the room from outside in the hall'")
+        enter("'What a shame, we could have really used you in our legion'")
+        enter("Balthazar raises a laser pistol as you begin to explain yourself")
+        enter('You see a flash of light and your world goes dark')
+        enter('---You died---')
+        enter(' ')
+        enter('Starting from last choice')
+        enter(' ')
+        enter("The Synth raises its weapon and says, 'Come with me'")
+        enter('You can fight or leave')
+        a = input()
+    elif a == 'FIGHT':
+        enter("'No way,' you say 'this place is a lie'")
+        enter("'My sensors indicate that you are already weakened'")
+        your_hp = 280
+        win_indicator = 0
+        attack('SYNTH')
+        buse = 0
+        suse = 0
+        if win_indicator == 1:
+            k9 = True
+        elif win_indicator == -1:
+            enter('Try again')
+            attack('SYNTH')
+    else:
+        a = str(raw_input('Invalid command, please enter a valid command '))
+        a = a.upper()
